@@ -16,14 +16,14 @@ export const Footer: FC = () => {
         >
           Joey Anuff
         </a>
-        based on
+        on
         <a
           className="hover:opacity-50 ml-1"
           href="https://twitter.com/lexfridman"
           target="_blank"
           rel="noreferrer"
         >
-          Lance Martin's demo
+          the demos of Lance Martin and Mckay Wrigley
         </a>
         .
       </div>
