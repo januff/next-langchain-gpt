@@ -22,10 +22,10 @@ export default async function handler(
       // Vector DB
       const pinecone = new PineconeClient();
       await pinecone.init({
-        environment: "us-east1-gcp", 
+        environment: "us-west4-gcp", 
         apiKey: process.env.PINECONE_API_KEY ?? "",
       });
-      const index = pinecone.Index("lex-gpt");
+      const index = pinecone.Index("impromptu");
       const vectorStore = await PineconeStore.fromExistingIndex(
         new OpenAIEmbeddings(), {pineconeIndex: index},
       );
@@ -62,6 +62,8 @@ export default async function handler(
       const chain = VectorDBQAChain.fromLLM(model, vectorStore);
       chain.returnSourceDocuments=false;
       chain.k=4;
+
+      // console.log('chain: ', chain)
 
       try {
         await chain.call({

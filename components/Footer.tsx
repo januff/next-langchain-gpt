@@ -7,14 +7,14 @@ export const Footer: FC = () => {
       <div className="hidden sm:flex"></div>
 
       <div className="hidden sm:flex italic text-sm">
-        Created by
+        Built by
         <a
           className="hover:opacity-50 mx-1"
           href="https://twitter.com/RLanceMartin"
           target="_blank"
           rel="noreferrer"
         >
-          Lance Martin
+          Joey Anuff
         </a>
         based on
         <a
@@ -23,16 +23,7 @@ export const Footer: FC = () => {
           target="_blank"
           rel="noreferrer"
         >
-          Lex Fridman
-        </a>
-        {`'s blog`}
-        <a
-          className="hover:opacity-50 ml-1"
-          href="https://lexfridman.com/podcast/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Podcast
+          Lance Martin's demo
         </a>
         .
       </div>

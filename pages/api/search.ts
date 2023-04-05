@@ -18,15 +18,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     // Vector DB 
       const pinecone = new PineconeClient();
       await pinecone.init({
-        environment: "us-east1-gcp", 
+        environment: "us-west4-gcp", 
         apiKey: process.env.PINECONE_API_KEY ?? "",
       });
-      const index = pinecone.Index("lex-gpt");
+      const index = pinecone.Index("impromptu");
       const vectorStore = await PineconeStore.fromExistingIndex(
         new OpenAIEmbeddings(), {pineconeIndex: index},
       );
       // Return chunks to display as references 
-      const results = await vectorStore.similaritySearch(query, 7);
+      const results = await vectorStore.similaritySearch(query, 5);
       res.status(200).send(results); 
     }
 

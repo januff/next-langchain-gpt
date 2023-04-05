@@ -1,0 +1,23 @@
+{
+  "sortedMiddleware": [],
+  "middleware": {},
+  "functions": {
+    "/api/answer": {
+      "env": [],
+      "files": [
+        "server/edge-runtime-webpack.js",
+        "server/pages/api/answer.js"
+      ],
+      "name": "pages/api/answer",
+      "page": "/api/answer",
+      "matchers": [
+        {
+          "regexp": "^/api/answer$"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    }
+  },
+  "version": 2
+}

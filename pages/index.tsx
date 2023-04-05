@@ -1,26 +1,64 @@
 import { Answer } from "@/components/Answer/Answer";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
-import { LEXChunk } from "@/types";
+import { ImpromptuChunk } from "@/types";
 import { IconArrowRight, IconExternalLink, IconSearch } from "@tabler/icons-react";
 import Head from "next/head";
+import endent from "endent";
 import Image from "next/image";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 export default function Home() {
-
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [query, setQuery] = useState<string>("");
-  const [chunks, setChunks] = useState<LEXChunk[]>([]);
+  const [chunks, setChunks] = useState<ImpromptuChunk[]>([]);
   const [answer, setAnswer] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);  
+
   const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [mode, setMode] = useState<"search" | "chat">("chat");
+  const [matchCount, setMatchCount] = useState<number>(5);
   const [apiKey, setApiKey] = useState<string>("");
+
+  const handleSearch = async () => {
+    if (!apiKey) {
+      alert("Please enter an API key.");
+      return;
+    }
+    if (!query) {
+      alert("Please enter a query.");
+      return;
+    }
+
+    setAnswer("");
+    setChunks([]);
+    setLoading(true);
+
+    const searchResponse = await fetch("/api/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ query, apiKey, matches: matchCount })
+    });
+
+    if (!searchResponse.ok) {
+      setLoading(false);
+      throw new Error(searchResponse.statusText);
+    }
+
+    const results: ImpromptuChunk[] = await searchResponse.json();
+    setChunks(results);
+    setLoading(false);
+    inputRef.current?.focus();
+    return results;
+  };
 
   // Handle answer 
   const handleAnswer = async () => {
-    
+
     if (!apiKey) {
       alert("Please enter an API key.");
       return;
@@ -40,79 +78,181 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ query, apiKey })
+      body: JSON.stringify({ query, apiKey, matches: matchCount })
      });
 
      if (!search_results.ok) {
       setLoading(false);
       throw new Error(search_results.statusText);
     }
-    const results: LEXChunk[] = await search_results.json();
+    const results: ImpromptuChunk[] = await search_results.json();
     setChunks(results);
+    console.log('chunks set:', chunks)
 
     // Prompt for LLM summarization
-    const prompt = `You are a helpful assistant that accurately answers queries using Lex Fridman podcast episodes. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"`
-    const ctrl = new AbortController();
-    
-    fetchEventSource("/api/vectordbqa",  {
+    // const prompt = `You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"`
+
+    const prompt = endent`
+    You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"
+
+    ${results?.map((d: any) => d.pageContent).join("\n\n")}
+    `;
+
+    // console.log(prompt)
+
+    const answerResponse = await fetch("/api/answer", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ 
-        prompt, 
-        apiKey 
-      }),
-      onmessage: (event) => { 
-        setLoading(false);
-        const data = JSON.parse(event.data);
-        if (data.data === "DONE") {
-          // Complete 
-        } else {
-          // Stream text
-          setAnswer((prev) => prev + data.data);
-        }
-      }});
-  };
-  
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-        handleAnswer();
-      }
+      body: JSON.stringify({ prompt, apiKey })
+    });
+
+    // console.log(answerResponse)
+
+    if (!answerResponse.ok) {
+      setLoading(false);
+      throw new Error(answerResponse.statusText);
+    }
+
+    const data = answerResponse.body;
+
+    if (!data) {
+      return;
+    }
+
+    setLoading(false);
+
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      setAnswer((prev) => prev + chunkValue);
+    }
+
+    inputRef.current?.focus();
   };
 
-  // Save user API setting 
+    
+  //   fetchEventSource("/api/vectordbqa",  {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({ 
+  //       prompt, 
+  //       apiKey 
+  //     }),
+  //     onmessage: (event) => { 
+  //       setLoading(false);
+  //       const data = JSON.parse(event.data);
+  //       if (data.data === "DONE") {
+  //         // Complete 
+  //         console.log(chunks)
+  //       } else {
+  //         // Stream text
+  //         setAnswer((prev) => prev + data.data);
+  //       }
+  //     }});
+  // };
+  
+  // const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.key === "Enter") {
+  //       handleAnswer();
+  //     }
+  // };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (mode === "search") {
+        handleSearch();
+      } else {
+        handleAnswer();
+      }
+    }
+  };
+
   const handleSave = () => {
     if (apiKey.length !== 51) {
       alert("Please enter a valid API key.");
       return;
     }
 
-    // Set values from user inputs 
-    localStorage.setItem("KEY", apiKey);
+    localStorage.setItem("PG_KEY", apiKey);
+    localStorage.setItem("PG_MATCH_COUNT", matchCount.toString());
+    localStorage.setItem("PG_MODE", mode);
+
     setShowSettings(false);
+    inputRef.current?.focus();
   };
 
   const handleClear = () => {
-    localStorage.removeItem("KEY");
+    localStorage.removeItem("PG_KEY");
+    localStorage.removeItem("PG_MATCH_COUNT");
+    localStorage.removeItem("PG_MODE");
+
     setApiKey("");
+    setMatchCount(5);
+    setMode("search");
   };
 
+  // Save user API setting 
+  // const handleSave = () => {
+  //   if (apiKey.length !== 51) {
+  //     alert("Please enter a valid API key.");
+  //     return;
+  //   }
+
+  //   // Set values from user inputs 
+  //   localStorage.setItem("KEY", apiKey);
+  //   setShowSettings(false);
+  // };
+
+  // const handleClear = () => {
+  //   localStorage.removeItem("KEY");
+  //   setApiKey("");
+  // };
+
+  // useEffect(() => {
+  //   const KEY = localStorage.getItem("KEY");
+  //   if (KEY) {
+  //     setApiKey(KEY);
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const KEY = localStorage.getItem("KEY");
-    if (KEY) {
-      setApiKey(KEY);
+    const PG_KEY = localStorage.getItem("PG_KEY");
+    const PG_MATCH_COUNT = localStorage.getItem("PG_MATCH_COUNT");
+    const PG_MODE = localStorage.getItem("PG_MODE");
+
+    if (PG_KEY) {
+      setApiKey(PG_KEY);
     }
+
+    if (PG_MATCH_COUNT) {
+      setMatchCount(parseInt(PG_MATCH_COUNT));
+    }
+
+    if (PG_MODE) {
+      setMode(PG_MODE as "search" | "chat");
+    }
+
+    inputRef.current?.focus();
   }, []);
+
 
   // Render page
   return (
     <>
       <Head>
-        <title>Lex GPT</title>
+        <title>Impromptu GPT</title>
         <meta
           name="description"
-          content={`AI-powered search and chat for the Lex Fridman podcast. `}
+          content={`AI-powered search and chat for the Impromptu book. `}
         />
         <meta
           name="viewport"
@@ -137,6 +277,30 @@ export default function Home() {
 
             {showSettings && (
               <div className="w-[340px] sm:w-[400px]">
+                
+                <div>
+                  <div>Mode</div>
+                  <select
+                    className="max-w-[400px] block w-full cursor-pointer rounded-md border border-gray-300 p-2 text-black shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
+                    value={mode}
+                    onChange={(e) => setMode(e.target.value as "search" | "chat")}
+                  >
+                    <option value="search">Search</option>
+                    <option value="chat">Chat</option>
+                  </select>
+                </div>
+
+                <div className="mt-2">
+                  <div>Passage Count</div>
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={matchCount}
+                    onChange={(e) => setMatchCount(Number(e.target.value))}
+                    className="max-w-[400px] block w-full rounded-md border border-gray-300 p-2 text-black shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
                 <div className="mt-2">
                   <div>OpenAI API Key</div>
                   <input
@@ -180,7 +344,7 @@ export default function Home() {
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
                   type="text"
-                  placeholder="What is the path to AGI?"
+                  placeholder="What are hallucinations?"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -202,6 +366,18 @@ export default function Home() {
 
             {loading ? (
               <div className="mt-6 w-full">
+                {mode === "chat" && (
+                  <>
+                    <div className="font-bold text-2xl">Answer</div>
+                    <div className="animate-pulse mt-2">
+                      <div className="h-4 bg-gray-300 rounded"></div>
+                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
+                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
+                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
+                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
+                    </div>
+                  </>
+                )}
 
                 <div className="font-bold text-2xl mt-6">Passages</div>
                 <div className="animate-pulse mt-2">
@@ -225,25 +401,25 @@ export default function Home() {
                       <div className="mt-4 border border-zinc-600 rounded-lg p-4">
                         <div className="flex justify-between">
                           <div className="flex items-center">
-                            <Image
+                            {/* <Image
                               className="rounded-lg"
                               src={"/"+chunk.metadata.id+".jpg"}
                               width={103}
                               height={70}
                               alt={chunk.metadata.title}
-                            />
+                            /> */}
                             <div className="ml-4">
-                              <div className="font-bold text-xl">{chunk.metadata.title}</div>
+                              <div className="font-bold text-xl">{chunk.metadata.chapter}</div>
                             </div>
                           </div>
-                          <a
+                          {/* <a
                             className="hover:opacity-50 ml-4"
                             href={chunk.metadata.link}
                             target="_blank"
                             rel="noreferrer"
                           >
                             <IconExternalLink />
-                          </a>
+                          </a> */}
                         </div>
                         <div className="mt-4">{chunk.pageContent}</div>
                       </div>
@@ -259,25 +435,25 @@ export default function Home() {
                     <div className="mt-4 border border-zinc-600 rounded-lg p-4">
                       <div className="flex justify-between">
                         <div className="flex items-center">
-                          <Image
+                          {/* <Image
                             className="rounded-lg"
                             src={"/"+chunk.metadata.id+".jpg"}
                             width={103}
                             height={70}
                             alt={chunk.metadata.title}
-                          />
+                          /> */}
                           <div className="ml-4">
-                            <div className="font-bold text-xl">{chunk.metadata.title}</div>
+                            <div className="font-bold text-xl">{chunk.metadata.chapter}</div>
                           </div>
                         </div>
-                        <a
+                        {/* <a
                           className="hover:opacity-50 ml-2"
                           href={chunk.metadata.link}
                           target="_blank"
                           rel="noreferrer"
                         >
                           <IconExternalLink />
-                        </a>
+                        </a> */}
                       </div>
                       <div className="mt-4">{chunk.pageContent}</div>
                     </div>
@@ -285,7 +461,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="mt-6 text-center text-lg">{`AI-powered search and chat for the Lex Fridman podcast.`}</div>
+              <div className="mt-6 text-center text-lg">{`AI-powered search and chat for the Impromptu ebook.`}</div>
             )}
           </div>
         </div>
@@ -294,3 +470,5 @@ export default function Home() {
     </>
   );
 }
+
+
