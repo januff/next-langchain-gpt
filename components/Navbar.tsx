@@ -1,7 +1,7 @@
 import { IconExternalLink } from "@tabler/icons-react";
 import Image from "next/image";
 import { FC } from "react";
-import king from "../public/reid.png";
+import king from "../public/impromptu.jpeg";
 
 export const Navbar: FC = () => {
   return (
