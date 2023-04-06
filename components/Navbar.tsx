@@ -7,10 +7,6 @@ export const Navbar: FC = () => {
   return (
     <div className="flex h-[60px] border-b border-gray-300 py-2 px-8 items-center justify-between">
       <div className="font-bold text-2xl flex items-center">
-        <a
-          className="flex hover:opacity-50 items-center"
-          href="https://wait-but-why-gpt.vercel.app"
-        >
           <Image
             className="hidden sm:flex"
             src={king}
@@ -18,7 +14,6 @@ export const Navbar: FC = () => {
             height={40}
           />
           <div className="ml-2">Impromptu GPT</div>
-        </a>
       </div>
       <div>
         <a

@@ -7,7 +7,7 @@ export const Footer: FC = () => {
       <div className="hidden sm:flex"></div>
 
       <div className="hidden sm:flex italic text-sm">
-        Built by
+        Adapted by
         <a
           className="hover:opacity-50 mx-1"
           href="https://twitter.com/RLanceMartin"
@@ -16,14 +16,23 @@ export const Footer: FC = () => {
         >
           Joey Anuff
         </a>
-        on
+        from the repos of 
         <a
           className="hover:opacity-50 ml-1"
-          href="https://twitter.com/lexfridman"
+          href="https://github.com/PineappleExpress808/lex-gpt"
           target="_blank"
           rel="noreferrer"
         >
-          the demos of Lance Martin and Mckay Wrigley
+          Lance Martin
+        </a> 
+        &nbsp;and
+        <a
+          className="hover:opacity-50 ml-1"
+          href="https://github.com/mckaywrigley/chatbot-ui"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Mckay Wrigley
         </a>
         .
       </div>
@@ -31,7 +40,7 @@ export const Footer: FC = () => {
       <div className="flex space-x-4">
         <a
           className="flex items-center hover:opacity-50"
-          href="https://twitter.com/RLanceMartin"
+          href="https://twitter.com/JoeyAnuff"
           target="_blank"
           rel="noreferrer"
         >
@@ -40,7 +49,7 @@ export const Footer: FC = () => {
 
         <a
           className="flex items-center hover:opacity-50"
-          href="https://github.com/PineappleExpress808/lex-gpt"
+          href="https://github.com/januff/"
           target="_blank"
           rel="noreferrer"
         >
