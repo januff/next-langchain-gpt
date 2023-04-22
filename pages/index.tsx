@@ -345,9 +345,7 @@ export default function Home() {
                       <div className="mt-4 border border-zinc-600 rounded-lg p-4">
                         <div className="flex justify-between">
                           <div className="flex items-center">
-                            <div className="ml-4">
-                              <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
-                            </div>
+                            <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
                           </div>
                         </div>
                         <div className="mt-4 whitespace-pre-wrap">{chunk.pageContent}</div>
