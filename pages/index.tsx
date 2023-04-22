@@ -345,27 +345,12 @@ export default function Home() {
                       <div className="mt-4 border border-zinc-600 rounded-lg p-4">
                         <div className="flex justify-between">
                           <div className="flex items-center">
-                            {/* <Image
-                              className="rounded-lg"
-                              src={"/"+chunk.metadata.id+".jpg"}
-                              width={103}
-                              height={70}
-                              alt={chunk.metadata.title}
-                            /> */}
                             <div className="ml-4">
                               <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
                             </div>
                           </div>
-                          {/* <a
-                            className="hover:opacity-50 ml-4"
-                            href={chunk.metadata.link}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <IconExternalLink />
-                          </a> */}
                         </div>
-                        <div className="mt-4">{chunk.pageContent}</div>
+                        <div className="mt-4 whitespace-pre-wrap">{chunk.pageContent}</div>
                       </div>
                     </div>
                   ))}
@@ -379,25 +364,10 @@ export default function Home() {
                     <div className="mt-4 border border-zinc-600 rounded-lg p-4">
                       <div className="flex justify-between">
                         <div className="flex items-center">
-                          {/* <Image
-                            className="rounded-lg"
-                            src={"/"+chunk.metadata.id+".jpg"}
-                            width={103}
-                            height={70}
-                            alt={chunk.metadata.title}
-                          /> */}
                           <div className="ml-4">
                             <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
                           </div>
                         </div>
-                        {/* <a
-                          className="hover:opacity-50 ml-2"
-                          href={chunk.metadata.link}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <IconExternalLink />
-                        </a> */}
                       </div>
                       <div className="mt-4">{chunk.pageContent}</div>
                     </div>
