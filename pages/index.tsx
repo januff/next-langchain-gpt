@@ -19,7 +19,7 @@ export default function Home() {
 
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [mode, setMode] = useState<"search" | "chat">("chat");
-  const [matchCount, setMatchCount] = useState<number>(5);
+  const [matchCount, setMatchCount] = useState<number>(10);
   const [apiKey, setApiKey] = useState<string>("");
 
   const handleSearch = async () => {
@@ -87,13 +87,10 @@ export default function Home() {
     }
     const results: ImpromptuChunk[] = await search_results.json();
     setChunks(results);
-    console.log('chunks set:', chunks)
-
-    // Prompt for LLM summarization
-    // const prompt = `You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"`
+    // console.log('chunks set:', chunks)
 
     const prompt = endent`
-    You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"
+    You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Make your answer 6 sentences or less. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"
 
     ${results?.map((d: any) => d.pageContent).join("\n\n")}
     `;
@@ -137,35 +134,6 @@ export default function Home() {
     inputRef.current?.focus();
   };
 
-    
-  //   fetchEventSource("/api/vectordbqa",  {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify({ 
-  //       prompt, 
-  //       apiKey 
-  //     }),
-  //     onmessage: (event) => { 
-  //       setLoading(false);
-  //       const data = JSON.parse(event.data);
-  //       if (data.data === "DONE") {
-  //         // Complete 
-  //         console.log(chunks)
-  //       } else {
-  //         // Stream text
-  //         setAnswer((prev) => prev + data.data);
-  //       }
-  //     }});
-  // };
-  
-  // const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === "Enter") {
-  //       handleAnswer();
-  //     }
-  // };
-
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       if (mode === "search") {
@@ -199,30 +167,6 @@ export default function Home() {
     setMatchCount(5);
     setMode("search");
   };
-
-  // Save user API setting 
-  // const handleSave = () => {
-  //   if (apiKey.length !== 51) {
-  //     alert("Please enter a valid API key.");
-  //     return;
-  //   }
-
-  //   // Set values from user inputs 
-  //   localStorage.setItem("KEY", apiKey);
-  //   setShowSettings(false);
-  // };
-
-  // const handleClear = () => {
-  //   localStorage.removeItem("KEY");
-  //   setApiKey("");
-  // };
-
-  // useEffect(() => {
-  //   const KEY = localStorage.getItem("KEY");
-  //   if (KEY) {
-  //     setApiKey(KEY);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const PG_KEY = localStorage.getItem("PG_KEY");
@@ -344,7 +288,7 @@ export default function Home() {
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
                   type="text"
-                  placeholder="What are hallucinations?"
+                  placeholder="What does the book say about hallucinations?"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -409,7 +353,7 @@ export default function Home() {
                               alt={chunk.metadata.title}
                             /> */}
                             <div className="ml-4">
-                              <div className="font-bold text-xl">{chunk.metadata.chapter}</div>
+                              <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
                             </div>
                           </div>
                           {/* <a
@@ -443,7 +387,7 @@ export default function Home() {
                             alt={chunk.metadata.title}
                           /> */}
                           <div className="ml-4">
-                            <div className="font-bold text-xl">{chunk.metadata.chapter}</div>
+                            <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
                           </div>
                         </div>
                         {/* <a

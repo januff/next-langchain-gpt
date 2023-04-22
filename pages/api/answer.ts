@@ -11,7 +11,7 @@ const handler = async (req: Request): Promise<Response> => {
       apiKey: string;
     };
 
-    console.log('answer prompt', prompt)
+    // console.log('answer prompt', prompt)
 
     const stream = await OpenAIStream(prompt, apiKey);
 

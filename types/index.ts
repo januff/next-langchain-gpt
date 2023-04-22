@@ -10,5 +10,5 @@ export type ImpromptuChunk = {
 interface Metadata {
   title: string;
   source: string;
-  chapter: string;
+  chapter_display: string;
 }
