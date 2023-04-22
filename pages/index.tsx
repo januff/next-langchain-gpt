@@ -222,7 +222,7 @@ export default function Home() {
             {showSettings && (
               <div className="w-[340px] sm:w-[400px]">
                 
-                <div>
+                {/* <div>
                   <div>Mode</div>
                   <select
                     className="max-w-[400px] block w-full cursor-pointer rounded-md border border-gray-300 p-2 text-black shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
@@ -232,9 +232,9 @@ export default function Home() {
                     <option value="search">Search</option>
                     <option value="chat">Chat</option>
                   </select>
-                </div>
+                </div> */}
 
-                <div className="mt-2">
+                {/* <div className="mt-2">
                   <div>Passage Count</div>
                   <input
                     type="number"
@@ -244,7 +244,8 @@ export default function Home() {
                     onChange={(e) => setMatchCount(Number(e.target.value))}
                     className="max-w-[400px] block w-full rounded-md border border-gray-300 p-2 text-black shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm"
                   />
-                </div>
+                </div> */}
+
                 <div className="mt-2">
                   <div>OpenAI API Key</div>
                   <input
