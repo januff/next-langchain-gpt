@@ -3,7 +3,9 @@
   "middleware": {},
   "functions": {
     "/api/answer": {
-      "env": [],
+      "env": [
+        "OPENAI_API_KEY"
+      ],
       "files": [
         "server/edge-runtime-webpack.js",
         "server/pages/api/answer.js"

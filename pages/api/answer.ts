@@ -5,15 +5,17 @@ export const config = {
 };
 
 const handler = async (req: Request): Promise<Response> => {
+
+  const openKey = process.env.OPENAI_API_KEY ?? "";
+
   try {
-    const { prompt, apiKey } = (await req.json()) as {
+    const { prompt } = (await req.json()) as {
       prompt: string;
-      apiKey: string;
     };
 
     // console.log('answer prompt', prompt)
 
-    const stream = await OpenAIStream(prompt, apiKey);
+    const stream = await OpenAIStream(prompt, openKey);
 
     return new Response(stream);
   } catch (error) {
