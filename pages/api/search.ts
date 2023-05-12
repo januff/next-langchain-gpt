@@ -33,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       );
       // Return chunks to display as references 
       const results = await vectorStore.similaritySearch(query, 5);
+      console.log('results: ', results)
       res.status(200).send(results); 
     }
 
