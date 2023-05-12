@@ -13,7 +13,6 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const envTest = process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? process.env.OPENAI_API_KEY ?? "";
-  console.log('envTest: ', envTest)
 
   const [query, setQuery] = useState<string>("");
   const [chunks, setChunks] = useState<ImpromptuChunk[]>([]);
@@ -90,7 +89,7 @@ export default function Home() {
     }
     const results: ImpromptuChunk[] = await search_results.json();
     setChunks(results);
-    console.log('chunks set:', chunks)
+    // console.log('chunks set:', chunks)
 
     const prompt = endent`
     You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Make your answer 6 sentences or less. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"
