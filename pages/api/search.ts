@@ -12,10 +12,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     // Query 
     const query = req.body.query;
-    const apiKey = req.body.apiKey;
-    process.env.OPENAI_API_KEY = apiKey;
-    const pineKey = process.env.PINECONE_API_KEY ?? ""
-    // console.log(pineKey)
+    // const apiKey = "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"
+    // const apiKey = req.body.apiKey;
+    // const openKey = process.env.OPENAI_API_KEY;
+    // console.log('openKey:', openKey)
+
+    // const pineKey = process.env.PINECONE_API_KEY ?? ""
+    // console.log('Pinekey: ', pineKey)
 
     // Vector DB 
       const pinecone = new PineconeClient();

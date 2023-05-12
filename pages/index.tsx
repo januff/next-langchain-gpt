@@ -2,7 +2,7 @@ import { Answer } from "@/components/Answer/Answer";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { ImpromptuChunk } from "@/types";
-import { IconArrowRight, IconExternalLink, IconSearch } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 import Head from "next/head";
 import endent from "endent";
 import Image from "next/image";
@@ -12,6 +12,9 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const envTest = process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? "";
+  // console.log('envTest: ', envTest)
+
   const [query, setQuery] = useState<string>("");
   const [chunks, setChunks] = useState<ImpromptuChunk[]>([]);
   const [answer, setAnswer] = useState<string>("");
@@ -20,7 +23,7 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [mode, setMode] = useState<"search" | "chat">("chat");
   const [matchCount, setMatchCount] = useState<number>(5);
-  const [apiKey, setApiKey] = useState<string>("");
+  const [apiKey, setApiKey] = useState<string>(envTest);
 
   const handleSearch = async () => {
     if (!apiKey) {
@@ -137,7 +140,7 @@ export default function Home() {
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       if (mode === "search") {
-        handleSearch();
+        handleAnswer();
       } else {
         handleAnswer();
       }
@@ -213,7 +216,7 @@ export default function Home() {
         <div className="flex-1 overflow-auto">
           <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-3 pt-4 sm:pt-8">
             <button
-              className="mt-4 flex cursor-pointer items-center space-x-2 rounded-full border border-zinc-600 px-3 py-1 text-sm hover:opacity-50"
+              className="mt-4 flex cursor-pointer items-center space-x-2 rounded-full border border-zinc-600 px-3 py-1 text-sm hover:opacity-50 hidden"
               onClick={() => setShowSettings(!showSettings)}
             >
               {showSettings ? "Hide" : "Show"} Settings
@@ -282,7 +285,7 @@ export default function Home() {
             )}
 
             {apiKey.length === 51 ? (
-              <div className="relative w-full mt-4">
+              <div className="relative w-full mt-2">
                 <IconSearch className="absolute top-3 w-10 left-1 h-6 rounded-full opacity-50 sm:left-3 sm:top-4 sm:h-8" />
 
                 <input
