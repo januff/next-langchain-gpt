@@ -192,7 +192,7 @@ export default function Home() {
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="flex-1 overflow-auto">
-          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-3 pt-4 sm:pt-8">
+          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5 pt-4 sm:pt-8">
             <button
               className="mt-4 flex cursor-pointer items-center space-x-2 rounded-full border border-zinc-600 px-3 py-1 text-sm hover:opacity-50 hidden"
               onClick={() => setShowSettings(!showSettings)}
@@ -262,9 +262,8 @@ export default function Home() {
               </div>
             )}
 
-              <div className="relative w-full mt-2">
+              <div className="relative w-full mt-1">
                 <IconSearch className="absolute top-3 w-10 left-1 h-6 rounded-full opacity-50 sm:left-3 sm:top-4 sm:h-8" />
-
                 <input
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
@@ -274,39 +273,38 @@ export default function Home() {
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
-
               </div>
 
             {loading ? (
-              <div className="mt-6 w-full">
+              <div className="mt-5 w-full">
                 {mode === "chat" && (
                   <>
                     <div className="font-bold text-xl">Answer</div>
                     <div className="animate-pulse mt-2">
-                      <div className="h-4 bg-gray-300 rounded"></div>
-                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
-                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
-                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
-                      <div className="h-4 bg-gray-300 rounded mt-2"></div>
+                      <div className="h-4 bg-gray-100"></div>
+                      <div className="h-4 bg-gray-100  mt-2"></div>
+                      <div className="h-4 bg-gray-100  mt-2"></div>
+                      <div className="h-4 bg-gray-100  mt-2"></div>
+                      <div className="h-4 bg-gray-100  mt-2"></div>
                     </div>
                   </>
                 )}
 
-                <div className="font-bold text-xl mt-6">Excerpts</div>
+                <div className="font-bold text-xl mt-4">Excerpts</div>
                 <div className="animate-pulse mt-2">
-                  <div className="h-4 bg-gray-300 rounded"></div>
-                  <div className="h-4 bg-gray-300 rounded mt-2"></div>
-                  <div className="h-4 bg-gray-300 rounded mt-2"></div>
-                  <div className="h-4 bg-gray-300 rounded mt-2"></div>
-                  <div className="h-4 bg-gray-300 rounded mt-2"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                  <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                  <div className="h-4 bg-gray-200 rounded mt-2"></div>
+                  <div className="h-4 bg-gray-200 rounded mt-2"></div>
                 </div>
               </div>
             ) : answer ? (
-              <div className="mt-6">
-                <div className="font-bold text-xl mb-2">Answer</div>
+              <div className="mt-5">
+                <div className="font-bold text-xl mb-4">Answer</div>
                 <Answer text={answer} />
 
-                <div className="mt-6 mb-16">
+                <div className="mt-4 mb-16">
                   <div className="font-bold text-xl">Excerpts</div>
 
                   {chunks.map((chunk, index) => (
