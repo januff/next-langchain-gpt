@@ -292,7 +292,7 @@ export default function Home() {
                   </>
                 )}
 
-                <div className="font-bold text-xl mt-6">Passages</div>
+                <div className="font-bold text-xl mt-6">Excerpts</div>
                 <div className="animate-pulse mt-2">
                   <div className="h-4 bg-gray-300 rounded"></div>
                   <div className="h-4 bg-gray-300 rounded mt-2"></div>
