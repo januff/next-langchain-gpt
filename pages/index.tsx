@@ -153,21 +153,21 @@ export default function Home() {
     setMode("search");
   };
 
-  useEffect(() => {
-    const PG_KEY = localStorage.getItem("PG_KEY");
-    const PG_MATCH_COUNT = localStorage.getItem("PG_MATCH_COUNT");
-    const PG_MODE = localStorage.getItem("PG_MODE");
+  // useEffect(() => {
+  //   const PG_KEY = localStorage.getItem("PG_KEY");
+  //   const PG_MATCH_COUNT = localStorage.getItem("PG_MATCH_COUNT");
+  //   const PG_MODE = localStorage.getItem("PG_MODE");
 
-    if (PG_MATCH_COUNT) {
-      setMatchCount(parseInt(PG_MATCH_COUNT));
-    }
+  //   if (PG_MATCH_COUNT) {
+  //     setMatchCount(parseInt(PG_MATCH_COUNT));
+  //   }
 
-    if (PG_MODE) {
-      setMode(PG_MODE as "search" | "chat");
-    }
+  //   if (PG_MODE) {
+  //     setMode(PG_MODE as "search" | "chat");
+  //   }
 
-    inputRef.current?.focus();
-  }, []);
+  //   inputRef.current?.focus();
+  // }, []);
 
 
   // Render page
@@ -281,7 +281,7 @@ export default function Home() {
               <div className="mt-6 w-full">
                 {mode === "chat" && (
                   <>
-                    <div className="font-bold text-2xl">Answer</div>
+                    <div className="font-bold text-xl">Answer</div>
                     <div className="animate-pulse mt-2">
                       <div className="h-4 bg-gray-300 rounded"></div>
                       <div className="h-4 bg-gray-300 rounded mt-2"></div>
@@ -292,7 +292,7 @@ export default function Home() {
                   </>
                 )}
 
-                <div className="font-bold text-2xl mt-6">Passages</div>
+                <div className="font-bold text-xl mt-6">Passages</div>
                 <div className="animate-pulse mt-2">
                   <div className="h-4 bg-gray-300 rounded"></div>
                   <div className="h-4 bg-gray-300 rounded mt-2"></div>
@@ -303,21 +303,21 @@ export default function Home() {
               </div>
             ) : answer ? (
               <div className="mt-6">
-                <div className="font-bold text-2xl mb-2">Answer</div>
+                <div className="font-bold text-xl mb-2">Answer</div>
                 <Answer text={answer} />
 
                 <div className="mt-6 mb-16">
-                  <div className="font-bold text-2xl">Passages</div>
+                  <div className="font-bold text-xl">Excerpts</div>
 
                   {chunks.map((chunk, index) => (
                     <div key={index}>
-                      <div className="mt-4 border border-zinc-600 rounded-lg p-4">
+                      <div className="mt-4 border-2 border-dashed border-zinc-600 bg-gray-200 rounded-lg p-4">
                         <div className="flex justify-between">
                           <div className="flex items-center">
-                            <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
+                            <div className="font-bold text-base">{chunk.metadata.chapter_display}</div>
                           </div>
                         </div>
-                        <div className="mt-4 whitespace-pre-wrap">{chunk.pageContent}</div>
+                        <div className="mt-4 whitespace-pre-wrap text-sm">{chunk.pageContent}</div>
                       </div>
                     </div>
                   ))}
@@ -325,14 +325,14 @@ export default function Home() {
               </div>
             ) : chunks.length > 0 ? (
               <div className="mt-6 pb-16">
-                <div className="font-bold text-2xl">Passages</div>
+                <div className="font-bold text-xl">Excerpts</div>
                 {chunks.map((chunk, index) => (
                   <div key={index}>
-                    <div className="mt-4 border border-zinc-600 rounded-lg p-4">
+                    <div className="mt-4 border bg-rose-50 border-zinc-600 rounded-lg p-4">
                       <div className="flex justify-between">
                         <div className="flex items-center">
                           <div className="ml-4">
-                            <div className="font-bold text-xl">{chunk.metadata.chapter_display}</div>
+                            <div className="font-bold text-base">{chunk.metadata.chapter_display}</div>
                           </div>
                         </div>
                       </div>
