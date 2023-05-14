@@ -13,7 +13,7 @@ export const Answer: React.FC<AnswerProps> = ({ text }) => {
   }, [text]);
 
   return (
-    <div className="bg-gray-100 p-6">
+    <div className="bg-gray-100 text-base p-6">
       {words.map((word, index) => (
         <span
           key={index}

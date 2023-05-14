@@ -266,7 +266,7 @@ export default function Home() {
                 <IconSearch className="absolute top-3 w-10 left-1 h-6 rounded-full opacity-50 sm:left-3 sm:top-4 sm:h-8" />
                 <input
                   ref={inputRef}
-                  className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
+                  className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-md"
                   type="text"
                   placeholder="What does the book say about hallucinations?"
                   value={query}
@@ -340,7 +340,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="mt-6 text-center text-lg">{`AI-powered search and chat for the Impromptu ebook.`}</div>
+              <div className="mt-6 text-center text-xs">AI-powered search and chat for <i>Impromptu: Amplifying Our Humanity Through AI</i></div>
             )}
           </div>
         </div>
