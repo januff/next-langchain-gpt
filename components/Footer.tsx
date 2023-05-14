@@ -7,7 +7,7 @@ export const Footer: FC = () => {
       <div className="hidden sm:flex"></div>
 
       <div className="hidden sm:flex italic text-sm">
-        Adapted by
+        by
         <a
           className="hover:opacity-50 mx-1"
           href="https://twitter.com/JoeyAnuff"
@@ -16,7 +16,7 @@ export const Footer: FC = () => {
         >
           Joey Anuff
         </a>
-        from the repos of 
+        (from repos by 
         <a
           className="hover:opacity-50 ml-1"
           href="https://github.com/PineappleExpress808/lex-gpt"
@@ -34,7 +34,7 @@ export const Footer: FC = () => {
         >
           Mckay Wrigley
         </a>
-        .
+        )
       </div>
 
       <div className="flex space-x-4">

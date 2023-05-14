@@ -340,7 +340,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="mt-6 text-center text-xs">AI-powered search and chat for <i>Impromptu: Amplifying Our Humanity Through AI</i></div>
+              <div className="mt-6 text-center text-xs">AI-powered search for <a target="_blank" href="https://www.impromptubook.com/"><i>Impromptu: Amplifying Our Humanity Through AI</i></a></div>
             )}
           </div>
         </div>
