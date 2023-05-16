@@ -13,7 +13,7 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [tags] = useState<string[]>(['Bliss Copy','Clickbait', 'Education Statistics',
+  const [tags] = useState<string[]>(['Bliss Copy','Criminal Justice', 'Education Statistics', 'Social Media',
   'Frankfurt School', 'Gettysburg Address', 'Great War', 'Stable Diffusion', 'MrBeast', 'Impossible Interviews', 'Steven Mintz', 'Polaroid Instamatics', 'Gong\'an', 'New Jim Crow', 'Petrarchan Sonnets', 'Socrates', 'Zoological Nomenclature']); 
 
   // const [executeAnswer, setExecuteAnswer] = useState<boolean>(false);
@@ -101,7 +101,7 @@ export default function Home() {
     const reader = data.getReader();
     const decoder = new TextDecoder();
     let done = false;
-    
+
     setLoading(false);
 
     while (!done) {
