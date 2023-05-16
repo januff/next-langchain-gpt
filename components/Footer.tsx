@@ -7,33 +7,37 @@ export const Footer: FC = () => {
       <div className="hidden sm:flex"></div>
 
       <div className="hidden sm:flex italic text-sm">
-        by
-        <a
-          className="hover:opacity-50 mx-1"
-          href="https://twitter.com/JoeyAnuff"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Joey Anuff
-        </a>
+        <code
+          className="text-yellow-500"> 
+          <a
+            href="https://github.com/januff/"
+            target="_blank"
+            rel="noreferrer">
+            Joey Anuff&nbsp;
+          </a>
+        </code>
         (from repos by 
-        <a
-          className="hover:opacity-50 ml-1"
-          href="https://github.com/PineappleExpress808/lex-gpt"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Lance Martin
-        </a> 
+          <code className="ml-1 text-yellow-500"> 
+            <a
+              className="hover:opacity-50 ml-1"
+              href="https://github.com/PineappleExpress808/lex-gpt"
+              target="_blank"
+              rel="noreferrer"
+            >
+            Lance Martin
+            </a> 
+          </code>
         &nbsp;and
-        <a
-          className="hover:opacity-50 ml-1"
-          href="https://github.com/mckaywrigley/chatbot-ui"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Mckay Wrigley
-        </a>
+          <code className="ml-1 text-yellow-500">
+            <a
+              className="hover:opacity-50 ml-1"
+              href="https://github.com/mckaywrigley/chatbot-ui"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Mckay Wrigley
+            </a>
+          </code>
         )
       </div>
 

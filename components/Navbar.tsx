@@ -8,12 +8,12 @@ export const Navbar: FC = () => {
     <div className="flex h-[60px] border-b border-gray-300 py-2 px-3 items-center justify-between">
       <div className="font-bold text-lg flex items-center">
           <Image
-            className="hidden sm:flex"
+            className="hidden sm:flex mr-3"
             src={king}
             alt="Impromptu by Reid Hoffman & GPT"
             height={40}
           />
-          <div className="ml-3">Impromptu GPT</div>
+          <div>Impromptu GPT</div>
       </div>
       <div>
         <a
