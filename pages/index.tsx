@@ -1,6 +1,7 @@
 import { Answer } from "@/components/Answer/Answer";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import TagCloud from '../components/TagCloud';
 import { ImpromptuChunk } from "@/types";
 import { IconSearch } from "@tabler/icons-react";
 import Head from "next/head";
@@ -11,6 +12,23 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [tags] = useState<string[]>(['Bliss Copy','Clickbait', 'Education Statistics',
+  'Frankfurt School', 'Gettysburg Address', 'Great War', 'Stable Diffusion', 'MrBeast', 'Impossible Interviews', 'Steven Mintz', 'Polaroid Instamatics', 'Gong\'an', 'New Jim Crow', 'Petrarchan Sonnets', 'Socrates', 'Zoological Nomenclature']); 
+
+  const [executeAnswer, setExecuteAnswer] = useState<boolean>(false);
+
+  const handleTagClick = (tag: string): void => {
+    if (loading) {
+      alert("Hold on still loading.");
+      return;
+    }
+    setAnswer("");
+    const newQuery:string = `What does the book say about ${tag}?`; 
+    setQuery(newQuery);
+    setExecuteAnswer(true); 
+  };
+
 
   const envTest = process.env.NEXT_PUBLIC_OPENAI_API_KEY ?? process.env.OPENAI_API_KEY ?? "";
 
@@ -23,43 +41,13 @@ export default function Home() {
   const [mode, setMode] = useState<"search" | "chat">("chat");
   const [matchCount, setMatchCount] = useState<number>(5);
 
-  const handleSearch = async () => {
-    if (!query) {
-      alert("Please enter a query.");
-      return;
-    }
-
-    setAnswer("");
-    setChunks([]);
-    setLoading(true);
-
-    const searchResponse = await fetch("/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ query })
-    });
-
-    if (!searchResponse.ok) {
-      setLoading(false);
-      throw new Error(searchResponse.statusText);
-    }
-
-    const results: ImpromptuChunk[] = await searchResponse.json();
-    setChunks(results);
-    setLoading(false);
-    inputRef.current?.focus();
-    return results;
-  };
-
   // Handle answer 
   const handleAnswer = async () => {
     if (!query) {
       alert("Please enter a query.");
       return;
     }
-    
+
     setAnswer("");
     setChunks([]);
     setLoading(true);
@@ -110,8 +98,6 @@ export default function Home() {
       return;
     }
 
-    setLoading(false);
-
     const reader = data.getReader();
     const decoder = new TextDecoder();
     let done = false;
@@ -122,7 +108,9 @@ export default function Home() {
       const chunkValue = decoder.decode(value);
       setAnswer((prev) => prev + chunkValue);
     }
+    // setExecuteAnswer(false); 
 
+    setLoading(false);
     inputRef.current?.focus();
   };
 
@@ -152,6 +140,12 @@ export default function Home() {
     setMatchCount(5);
     setMode("search");
   };
+
+  useEffect(() => {
+    if (executeAnswer && query !== '') {
+      handleAnswer();
+    }
+  }, [executeAnswer, query]);
 
   // useEffect(() => {
   //   const PG_KEY = localStorage.getItem("PG_KEY");
@@ -304,7 +298,7 @@ export default function Home() {
                 <div className="font-bold text-xl mb-4">Answer</div>
                 <Answer text={answer} />
 
-                <div className="mt-4 mb-16">
+                <div className="mt-4 mb-6">
                   <div className="font-bold text-xl">Excerpts</div>
 
                   {chunks.map((chunk, index) => (
@@ -322,11 +316,11 @@ export default function Home() {
                 </div>
               </div>
             ) : chunks.length > 0 ? (
-              <div className="mt-6 pb-16">
+              <div className="mt-6 pb-6">
                 <div className="font-bold text-xl">Excerpts</div>
                 {chunks.map((chunk, index) => (
                   <div key={index}>
-                    <div className="mt-4 border bg-rose-50 border-zinc-600 rounded-lg p-4">
+                    <div className="mt-4 border-2 border-dashed bg-gray-200 border-zinc-600 rounded-lg p-4">
                       <div className="flex justify-between">
                         <div className="flex items-center">
                           <div className="ml-4">
@@ -344,6 +338,10 @@ export default function Home() {
             )}
           </div>
         </div>
+
+        <TagCloud 
+          tags={tags} 
+          onTagClick={handleTagClick} />
         <Footer />
       </div>
     </>
