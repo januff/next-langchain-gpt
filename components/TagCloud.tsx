@@ -15,7 +15,7 @@ const TagCloud: FC<TagCloudProps> = ({ tags, onTagClick }) => (
         Explore Topics</span>
         <span className="flex-grow block border-t border-black"></span>
     </h2>
-    <div className="tag-cloud flex justify-center flex-wrap gap-2 p-4 max-w-sm mx-auto my-4">
+    <div className="tag-cloud flex justify-center flex-wrap gap-2 p-4 max-w-sm mx-auto my-1">
     {tags.map((tag, index) => (     
         <button 
           className="tag px-2 py-1 rounded bg-gray-200 text-gray-700 text-sm hover:bg-gray-300 transition duration-200 ease-in-out"
