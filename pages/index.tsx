@@ -16,7 +16,7 @@ export default function Home() {
   const [tags] = useState<string[]>(['Bliss Copy','Clickbait', 'Education Statistics',
   'Frankfurt School', 'Gettysburg Address', 'Great War', 'Stable Diffusion', 'MrBeast', 'Impossible Interviews', 'Steven Mintz', 'Polaroid Instamatics', 'Gong\'an', 'New Jim Crow', 'Petrarchan Sonnets', 'Socrates', 'Zoological Nomenclature']); 
 
-  const [executeAnswer, setExecuteAnswer] = useState<boolean>(false);
+  // const [executeAnswer, setExecuteAnswer] = useState<boolean>(false);
 
   const handleTagClick = (tag: string): void => {
     if (loading) {
@@ -26,7 +26,7 @@ export default function Home() {
     setAnswer("");
     const newQuery:string = `What does the book say about ${tag}?`; 
     setQuery(newQuery);
-    setExecuteAnswer(true); 
+    // setExecuteAnswer(true); 
   };
 
 
@@ -101,6 +101,8 @@ export default function Home() {
     const reader = data.getReader();
     const decoder = new TextDecoder();
     let done = false;
+    
+    setLoading(false);
 
     while (!done) {
       const { value, done: doneReading } = await reader.read();
@@ -110,7 +112,6 @@ export default function Home() {
     }
     // setExecuteAnswer(false); 
 
-    setLoading(false);
     inputRef.current?.focus();
   };
 
@@ -142,10 +143,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (executeAnswer && query !== '') {
+    if (query !== '') {
       handleAnswer();
     }
-  }, [executeAnswer, query]);
+  }, [query]);
 
   // useEffect(() => {
   //   const PG_KEY = localStorage.getItem("PG_KEY");
