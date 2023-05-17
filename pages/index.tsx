@@ -16,16 +16,17 @@ export default function Home() {
   const [tags] = useState<string[]>(['Bliss Copy','Criminal Justice', 'Education Statistics', 'Social Media',
   'Frankfurt School', 'Gettysburg Address', 'Great War', 'Stable Diffusion', 'MrBeast', 'Impossible Interviews', 'Steven Mintz', 'Polaroid Instamatics', 'Gong\'an', 'New Jim Crow', 'Petrarchan Sonnets', 'Socrates', 'Zoological Nomenclature']); 
 
-  // const [executeAnswer, setExecuteAnswer] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(true);
 
   const handleTagClick = (tag: string): void => {
     if (loading) {
       alert("Hold on still loading.");
       return;
     }
-    setAnswer("");
+    // setAnswer("");
     const newQuery:string = `What does the book say about ${tag}?`; 
     setQuery(newQuery);
+    inputRef.current?.focus();
     // setExecuteAnswer(true); 
   };
 
@@ -38,7 +39,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);  
 
   const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [mode, setMode] = useState<"search" | "chat">("chat");
+  const [mode, setMode] = useState<"search" | "chat">("search");
   const [matchCount, setMatchCount] = useState<number>(5);
 
   // Handle answer 
@@ -47,10 +48,15 @@ export default function Home() {
       alert("Please enter a query.");
       return;
     }
+    if (!ready) {
+      alert("Hold on, not ready.");
+      return;
+    }
 
     setAnswer("");
     setChunks([]);
     setLoading(true);
+    setReady(false);
     
     // Similarity search for relevant chunks 
     const search_results = await fetch("/api/search", {
@@ -111,6 +117,7 @@ export default function Home() {
       setAnswer((prev) => prev + chunkValue);
     }
     // setExecuteAnswer(false); 
+    setReady(true);
 
     inputRef.current?.focus();
   };
@@ -120,7 +127,7 @@ export default function Home() {
       if (mode === "search") {
         handleAnswer();
       } else {
-        handleAnswer();
+        return;
       }
     }
   };
@@ -142,11 +149,11 @@ export default function Home() {
     setMode("search");
   };
 
-  useEffect(() => {
-    if (query !== '') {
-      handleAnswer();
-    }
-  }, [query]);
+  // useEffect(() => {
+  //   if (query !== '') {
+  //     handleAnswer();
+  //   }
+  // }, [query]);
 
   // useEffect(() => {
   //   const PG_KEY = localStorage.getItem("PG_KEY");
