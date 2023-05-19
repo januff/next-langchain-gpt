@@ -2,6 +2,7 @@ import { Answer } from "@/components/Answer/Answer";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import TagCloud from '../components/TagCloud';
+import { Book } from '@/components/Book';
 import { ImpromptuChunk } from "@/types";
 import { IconSearch } from "@tabler/icons-react";
 import Head from "next/head";
@@ -24,7 +25,7 @@ export default function Home() {
       return;
     }
     // setAnswer("");
-    const newQuery:string = `What does the book say about ${tag}?`; 
+    const newQuery:string = `What does Impromptu say about ${tag}?`; 
     setQuery(newQuery);
     inputRef.current?.focus();
     // setExecuteAnswer(true); 
@@ -193,8 +194,9 @@ export default function Home() {
 
       <div className="flex flex-col h-screen">
         <Navbar />
+        <Book />
         <div className="flex-1 overflow-auto">
-          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5 pt-4 sm:pt-8">
+          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5">
             <button
               className="mt-4 flex cursor-pointer items-center space-x-2 rounded-full border border-zinc-600 px-3 py-1 text-sm hover:opacity-50 hidden"
               onClick={() => setShowSettings(!showSettings)}
@@ -270,7 +272,7 @@ export default function Home() {
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-base"
                   type="text"
-                  placeholder="What does the book say about hallucinations?"
+                  placeholder="What does Impromptu say about hallucinations?"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -342,7 +344,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="mt-6 text-center text-xs">AI-powered search for <a target="_blank" href="https://www.impromptubook.com/"><i>Impromptu: Amplifying Our Humanity Through AI</i></a></div>
+              <div className="mt-4 text-center text-xs">AI-powered search for <a target="_blank" href="https://www.impromptubook.com/"><i>Impromptu: Amplifying Our Humanity Through AI</i></a></div>
             )}
           </div>
         </div>
