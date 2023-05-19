@@ -8,7 +8,7 @@ export const Book: FC = () => {
     <div className="flex h-[300px] items-center justify-center">
       <div className="flex flex-col text-left max-w-[240px] tracking-tight">
           <h1 className="text-4xl font-black tracking-tight">Impromptu</h1>
-          <h2 className="text-sm font-bold tracking-tight mt-2">Amplifying Our Humanity Through AI</h2>
+          <h2 className="text-sm font-bold tracking-tighter mt-2">Amplifying Our Humanity Through AI</h2>
           <span className="my-1 mt-2 text-xs font-semibold">A new book by Reid Hoffman, with GPT-4.</span>
           <span className="my-1 text-xs font-semibold">In the past, you had to read books. Now, you can simply ask them questions. Try it out!</span>
           <span className="my-1 text-xs font-semibold">If you like what you see, you can download a free PDF of the complete book <a className="font-bold text-yellow-500" download href="https://www.impromptubook.com/wp-content/uploads/2023/03/impromptu-rh.pdf">here</a>.</span>
