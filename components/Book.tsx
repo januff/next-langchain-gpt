@@ -6,7 +6,7 @@ import cover from "../public/cover-impromptu.jpg";
 export const Book: FC = () => {
   return (
     <div className="flex h-[300px] items-center justify-center">
-      <div className="flex flex-col text-left ml-2 max-w-[250px] tracking-tight">
+      <div className="flex flex-col text-left max-w-[240px] tracking-tight">
           <h1 className="text-4xl font-black tracking-tight">Impromptu</h1>
           <h2 className="text-sm font-bold tracking-tight mt-2">Amplifying Our Humanity Through AI</h2>
           <span className="my-1 mt-2 text-xs font-semibold">A new book by Reid Hoffman, with GPT-4.</span>
@@ -20,7 +20,7 @@ export const Book: FC = () => {
             className="ml-1"
             src={cover}
             alt="Impromptu by Reid Hoffman & GPT"
-            height={290}
+            height={300}
           />
       </div>
 
