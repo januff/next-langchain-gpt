@@ -196,7 +196,7 @@ export default function Home() {
         <Navbar />
 
         <div className="flex-1 overflow-auto">
-          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5">
+          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5 mt-2">
             <Book />
             <button
               className="mt-4 flex cursor-pointer items-center space-x-2 rounded-full border border-zinc-600 px-3 py-1 text-sm hover:opacity-50 hidden"
