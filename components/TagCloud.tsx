@@ -11,7 +11,7 @@ const TagCloud: FC<TagCloudProps> = ({ tags, onTagClick }) => (
   <div className="tag-cloud bg-gray-300">
       <h2 className="flex flex-row flex-nowrap items-center mt-4">
         <span className="flex-grow block border-t border-black"></span>
-        <span className="flex-none block mx-4 px-4 py-2.5 text-md rounded leading-none font-medium bg-black text-white">
+        <span className="flex-none block mx-4 px-4 py-2.5 font-black rounded leading-none font-medium bg-black text-white">
         Explore Topics</span>
         <span className="flex-grow block border-t border-black"></span>
     </h2>

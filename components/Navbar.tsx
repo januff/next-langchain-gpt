@@ -6,7 +6,7 @@ import king from "../public/impromptu.jpeg";
 export const Navbar: FC = () => {
   return (
     <div className="flex h-[60px] border-b bg-gray-200 py-2 px-3 items-center justify-between">
-      <div className="font-bold text-lg flex items-center">
+      <div className="font-black tracking-tight text-lg flex items-center">
           <Image
             className="hidden sm:flex mr-3"
             src={king}
