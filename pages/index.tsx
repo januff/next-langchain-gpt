@@ -196,8 +196,10 @@ export default function Home() {
         <Navbar />
 
         <div className="flex-1 overflow-auto">
-          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5 mt-2">
+          <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-5 mt-3">
+
             <Book />
+            
             <button
               className="mt-4 flex cursor-pointer items-center space-x-2 rounded-full border border-zinc-600 px-3 py-1 text-sm hover:opacity-50 hidden"
               onClick={() => setShowSettings(!showSettings)}
@@ -267,7 +269,7 @@ export default function Home() {
               </div>
             )}
 
-              <div className="relative w-full mt-1">
+              <div className="relative w-full mt-3">
                 <IconSearch className="absolute top-3 w-10 left-1 h-6 rounded-full opacity-50 sm:left-3 sm:top-4 sm:h-8" />
                 <input
                   ref={inputRef}
@@ -345,7 +347,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <div className="mt-4 text-center text-xs">AI-powered search for <a target="_blank" href="https://www.impromptubook.com/"><i>Impromptu: Amplifying Our Humanity Through AI</i></a></div>
+              <div className="mt-4 pb-6 text-center text-xs">AI-powered search for <a target="_blank" href="https://www.impromptubook.com/"><i>Impromptu: Amplifying Our Humanity Through AI</i></a></div>
             )}
           </div>
         </div>
