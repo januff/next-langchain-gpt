@@ -1,6 +1,7 @@
 import { Answer } from "@/components/Answer/Answer";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { AnswerTip } from "@/components/AnswerTip";
 import TagCloud from '../components/TagCloud';
 import { Book } from '@/components/Book';
 import { ImpromptuChunk } from "@/types";
@@ -10,12 +11,13 @@ import endent from "endent";
 import Image from "next/image";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { ExcerptTip } from "@/components/ExcerptTip";
 
 export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [tags] = useState<string[]>(['Bliss Copy','Criminal Justice', 'Education Statistics', 'Social Media',
-  'Frankfurt School', 'Gettysburg Address', 'Great War', 'Stable Diffusion', 'MrBeast', 'Impossible Interviews', 'Steven Mintz', 'Polaroid Instamatics', 'Gong\'an', 'New Jim Crow', 'Petrarchan Sonnets', 'Socrates', 'Zoological Nomenclature']); 
+  const [tags] = useState<string[]>(['The Bliss Copy','Criminal Justice', 'Education Statistics', 'Social Media',
+  'Theodore Adorno', 'The Gettysburg Address', 'The Great War', 'Olduvai Gorge', 'Stable Diffusion', 'MrBeast', 'Impossible Interviews', 'Steven Mintz', 'Gong\'an', 'The New Jim Crow', 'Petrarchan Sonnets', 'Zoological Nomenclature']); 
 
   const [ready, setReady] = useState<boolean>(true);
 
@@ -68,17 +70,21 @@ export default function Home() {
       body: JSON.stringify({ query })
      });
 
+    //  console.log('new Retrievals', search_results);
+
      if (!search_results.ok) {
       setLoading(false);
       throw new Error(search_results.statusText);
     }
+
     const results: ImpromptuChunk[] = await search_results.json();
     setChunks(results);
     // console.log('chunks set:', chunks)
 
     const prompt = endent`
-    You are a helpful assistant that accurately answers queries using the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Make your answer 6 sentences or less. Be accurate, helpful, concise, and clear. Use the following passages to provide an answer to the query: "${query}"
+    You are a helpful assistant that accurately answers queries using excerpt from the full text of Reid Hoffman's book Impromptu. Use the text provided to form your answer, but avoid copying word-for-word from the posts. Try to use your own words when possible. Make your answer 6 sentences or less. Be accurate, helpful, concise, and clear. Use the excerpts that follow to provide an answer to the query: "${query}"
 
+    Excerpts:
     ${results?.map((d: any) => d.pageContent).join("\n\n")}
     `;
 
@@ -180,7 +186,7 @@ export default function Home() {
         <title>Impromptu GPT</title>
         <meta
           name="description"
-          content={`AI-powered search and chat for the Impromptu book. `}
+          content={`AI-powered search and chat for Reid Hoffman's book, Impromptu. `}
         />
         <meta
           name="viewport"
@@ -273,7 +279,9 @@ export default function Home() {
                 <IconSearch className="absolute top-3 w-10 left-1 h-6 rounded-full opacity-50 sm:left-3 sm:top-4 sm:h-8" />
                 <input
                   ref={inputRef}
-                  className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-base"
+                  className="h-12 w-full rounded-full border 
+                  text-base
+                  border-zinc-600 pr-12 pl-10 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16"
                   type="text"
                   placeholder="What does Impromptu say about hallucinations?"
                   value={query}
@@ -308,11 +316,18 @@ export default function Home() {
               </div>
             ) : answer ? (
               <div className="mt-5">
-                <div className="font-bold text-xl mb-4">Answer</div>
+                <div className="font-bold text-xl mb-4">
+                  Answer
+                  {/* <AnswerTip /> */}
+                </div>
+                
                 <Answer text={answer} />
 
                 <div className="mt-4 mb-6">
-                  <div className="font-bold text-xl">Excerpts</div>
+                  <div className="font-bold text-xl">
+                    Excerpts
+                    {/* <ExcerptTip /> */}
+                  </div>
 
                   {chunks.map((chunk, index) => (
                     <div key={index}>
